@@ -1,0 +1,66 @@
+<div class="left-col sidebar-2">
+
+	<div class="site-branding">
+
+		
+			<div id="logo">
+				<a href="{:url('index/index')}" class="custom-logo-link" rel="home">MY BLOG</a>			</div><!-- #logo -->
+
+		
+	</div><!-- .site-branding -->	
+				
+	<style type="text/css">
+		.active{
+			background-color: #ff4c4c;
+		}
+		li.active a{
+
+			color: #ffffff;
+		}
+	</style>
+	
+	<nav id="primary-nav" class="primary-navigation phone_menu_col_4">
+		<div class="menu-primary-container">
+			<ul id="primary-menu" class="sf-menu sf-js-enabled sf-arrows" style="touch-action: auto;">
+				{volist name="cateRes" id="cate"}
+					<li id="menu-item-492" 
+						<?php
+							if(isset($selectedCateId) && $selectedCateId==$cate['id']){
+								echo 'class="menu-item active"';
+							}else{
+								echo 'class="menu-item"';
+							}
+						?>
+					 >
+						<a href="{:url('artlist/index', ['cate_id'=>$cate['id']])}" aria-current="page">{$cate.cate_name}</a>
+					</li>
+				{/volist}
+
+
+
+
+
+
+
+
+
+
+
+</ul></div>	</nav><!-- #primary-nav -->
+
+	<!--<div id="slick-mobile-menu"></div>-->
+		
+	
+		<span class="search-icon">
+			<span class="genericon genericon-search"> <span>搜索</span></span>
+			<span class="genericon genericon-close"> <span>收起</span></span>			
+		</span>
+		<div class="header-search">
+			<form id="searchform" method="get" action="https://www.zhutibaba.com/demo/zimeiti2/">
+	<input type="search" name="s" class="search-input" placeholder="请输入关键词" autocomplete="off">
+	<button type="submit" class="search-submit">搜索</button>		
+</form>		</div><!-- .header-search -->
+	
+		
+
+</div>

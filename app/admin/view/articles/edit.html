@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html><head>
+        <meta charset="utf-8">
+    <title>后台</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="{__ADMIN_STATIC__}/style/bootstrap.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/font-awesome.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="{__ADMIN_STATIC__}/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="{__ADMIN_STATIC__}/style/demo.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/typicons.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/animate.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src="{__ADMIN_STATIC__}/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="{__ADMIN_STATIC__}/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="{__ADMIN_STATIC__}/ueditor/lang/zh-cn/zh-cn.js"></script>
+    
+</head>
+<body>
+    <!-- 头部 -->
+    {include file="common/head" /}
+    <!-- /头部 -->
+    
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            {include file="common/left" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li>
+                        <a href="#">文章管理</a>
+                    </li>
+                                        <li class="active">添加文章</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">新增文章</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" id="form" method="post">
+                        <input type="hidden" name="id" id="art_id" value="{$artInfo.id}">
+                        <div class="form-group">
+                            <label for="cate_id" class="col-sm-2 control-label no-padding-right">分类</label>
+                            <div class="col-sm-6">
+                                <select name="cate_id">
+                                    <option value="0">选择分类</option>
+                                    {volist name="cateRes" id="cate"}
+                                    <option {if condition="$cate['id'] eq $artInfo['cate_id']"} selected="selected" {/if} value="{$cate.id}">{$cate.cate_name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> 
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label no-padding-right">标题</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="title" placeholder="" name="title" value="{$artInfo.title}" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="thumb" class="col-sm-2 control-label no-padding-right">缩略图</label>
+                            <div class="col-sm-6">
+                                <input id="thumb" placeholder="" name="thumb" required="" type="file">
+                                {if condition="$artInfo['thumb']"}
+                                    <img src="http://img.tp6blog.com/{$artInfo['thumb']}" height="100">
+                                {/if}
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> 
+                        <div class="form-group">
+                            <label for="keywords" class="col-sm-2 control-label no-padding-right">关键词</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="keywords" placeholder="" name="keywords" value="{$artInfo.keywords}"  type="text">
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label no-padding-right">描述</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control"  id="description" name="description">{$artInfo.description}</textarea>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label no-padding-right">内容</label>
+                            <div class="col-sm-6">
+                                <textarea id="content" name="content">{$artInfo.content}</textarea>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" onClick="cateArt(event);" class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>  
+    </div>
+        <script type="text/javascript">
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用编辑器,直接调用UE.getEditor('editor')就能拿到相关的实例
+        UE.getEditor('content',{initialFrameWidth:820,initialFrameHeight:400,toolbars: [
+        [
+            'undo', //撤销
+            'bold', //加粗
+            'underline', //下划线
+            'preview', //预览
+            'horizontal', //分隔线
+            'inserttitle', //插入标题
+            'cleardoc', //清空文档
+            'fontfamily', //字体
+            'fontsize', //字号
+            'paragraph', //段落格式
+            'simpleupload', //单图上传
+            'insertimage', //多图上传
+            'attachment', //附件
+            'music', //音乐
+            'inserttable', //插入表格
+            'emotion', //表情
+            'insertvideo', //视频
+            'justifyleft', //居左对齐
+            'justifyright', //居右对齐
+            'justifycenter', //居中对
+            'justifyjustify', //两端对齐
+            'forecolor', //字体颜色
+            'fullscreen', //全屏
+            'edittip ', //编辑提示
+            'customstyle', //自定义标题
+            'template', //模板
+             ]
+        ]});
+
+
+        </script>
+
+    <script type="text/javascript">
+
+
+        function cateArt(event){
+            event.preventDefault();
+            var title = $("#title").val();
+            if(title.length < 2){
+                bootbox.dialog({
+                    message: "<div class='modal-body'>标题过短~</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                    title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                    className: "modal modal-message modal-warning",
+                });
+
+                // alert('文章名称过短！');
+                return false;
+            }
+            var formData =new FormData($('#form')[0])
+            $.ajax({
+                type:'post',
+                url:'{:url("Articles/edit")}',
+                data:formData,
+                cache: false,
+                contentType: false,    
+                processData: false, 
+                success:(res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-success' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='glyphicon glyphicon-check' style='color:#53a93f'></i>",
+                            className: "modal modal-message modal-success",
+                        });
+                    }else{
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                            className: "modal modal-message modal-warning",
+                        });
+                    }
+                }
+            });
+
+            
+        }
+    </script>
+        <!--Basic Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/jquery_002.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootstrap.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/beyond.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootbox.js"></script>
+
+
+
+
+</body></html>

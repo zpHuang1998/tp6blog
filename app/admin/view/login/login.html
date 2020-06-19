@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><!--Head--><head>
+    <meta charset="utf-8">
+    <title>后台</title>
+    <meta name="description" content="login page">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="{__ADMIN_STATIC__}/style/bootstrap.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/font-awesome.css" rel="stylesheet">
+    <!--Beyond styles-->
+    <link id="beyond-link" href="{__ADMIN_STATIC__}/style/beyond.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/demo.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/animate.css" rel="stylesheet">
+</head>
+<!--Head Ends-->
+<!--Body-->
+
+<body>
+    <div class="login-container animated fadeInDown">
+        <form action="" method="post">
+            <div class="loginbox bg-white">
+                <div class="loginbox-title">管理员登录</div>
+                <div class="loginbox-textbox">
+                    <input value="admin" class="form-control" placeholder="username" id="username" name="username" type="text">
+                </div>
+                <div class="loginbox-textbox">
+                    <input class="form-control" placeholder="password" id="password" name="password" type="password">
+                </div>
+                <div class="loginbox-submit">
+                    <input class="btn btn-primary btn-block" value="登录" onclick="login(event);" type="button">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <script type="text/javascript">
+
+        function login(event){
+            event.preventDefault();
+            var username = $("#username").val();
+            var password = $("#password").val();
+            if(username.length == ''){
+                bootbox.dialog({
+                    message: "<div class='modal-body'>用户名不能为空</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                    title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                    className: "modal modal-message modal-warning",
+                });
+
+                
+                return false;
+            }
+            $.ajax({
+               url: "{:url('Login/login')}",
+               method:"POST",
+               data:{
+                "username":username,
+                "password":password
+                },
+                success:(res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-success' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='glyphicon glyphicon-check' style='color:#53a93f'></i>",
+                            className: "modal modal-message modal-success",
+                        });
+                        setTimeout(function(){ 
+                            window.location.href = "{:url('index/index')}";
+                        }, 1000);
+                    }else{
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                            className: "modal modal-message modal-warning",
+                        });
+                    }
+                }
+
+            });
+        }
+    </script>
+    <!--Basic Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/jquery_002.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootstrap.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/beyond.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootbox.js"></script>
+
+
+
+
+</body><!--Body Ends--></html>

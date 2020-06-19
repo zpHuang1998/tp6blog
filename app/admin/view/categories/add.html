@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>后台</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="{__ADMIN_STATIC__}/style/bootstrap.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/font-awesome.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="{__ADMIN_STATIC__}/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="{__ADMIN_STATIC__}/style/demo.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/typicons.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/head" /}
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			<!-- Page Sidebar -->
+            {include file="common/left" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li>
+                        <a href="#">分类管理</a>
+                    </li>
+                                        <li class="active">添加分类</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">新增分类</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label for="cate_name" class="col-sm-2 control-label no-padding-right">分类名</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="cate_name" placeholder="" name="cate_name" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> 
+                        <div class="form-group">
+                            <label for="keywords" class="col-sm-2 control-label no-padding-right">关键词</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="keywords" placeholder="" name="keywords"  type="text">
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label no-padding-right">描述</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control"  id="description" name="description"></textarea>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="sort" class="col-sm-2 control-label no-padding-right">排序</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="sort" placeholder="" value="10" name="sort" required="" type="text">
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" onClick="cateadd(event);" class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+
+    <script type="text/javascript">
+
+        function cateadd(event){
+            event.preventDefault();
+            var cate_name = $("#cate_name").val();
+            if(cate_name=="")
+            {
+                bootbox.dialog({
+                    message: "<div class='modal-body'>分类名不能为空</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                    title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                    className: "modal modal-message modal-warning",
+                });
+                return false;
+
+            }
+            if(cate_name.length < 2){
+                bootbox.dialog({
+                    message: "<div class='modal-body'>标题过短~</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                    title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                    className: "modal modal-message modal-warning",
+                });
+
+                // alert('分类名称过短！');
+                return false;
+            }
+            var keywords = $("#keywords").val();
+            var description = $("#description").val();
+            var sort = $("#sort").val();
+            $.ajax({
+               url: "{:url('admin/Categories/add')}",
+               method:"POST",
+               data:{
+                "cate_name":cate_name,
+                "keywords":keywords,
+                "description":description,
+                "sort":sort,
+                },
+                success:(res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-success' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='glyphicon glyphicon-check' style='color:#53a93f'></i>",
+                            className: "modal modal-message modal-success",
+                        });
+                    }else{
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                            className: "modal modal-message modal-warning",
+                        });
+                    }
+                }
+
+            });
+        }
+    </script>
+	    <!--Basic Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/jquery_002.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootstrap.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/beyond.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootbox.js"></script>
+
+
+
+
+</body></html>

@@ -1,0 +1,11 @@
+<aside id="secondary" class="widget-area sidebar">
+	<div id="search-2" class="widget widget_search"><form id="searchform" method="get" action="{:url('search/index')}">
+	<input type="search" name="keywords" class="search-input" placeholder="请输入关键词" autocomplete="off">
+	<button type="submit" class="search-submit">搜索</button>		
+</form></div>
+
+<div id="zimeiti_2-views-2" class="widget widget-zimeiti_2-views widget_posts_thumbnail"><h2 class="widget-title"><span>浏览最多的文章<span></span></span></h2><ul>
+	{volist name="hotArts" id="art"}
+	<li class="clear"><a href="" rel="bookmark"><div class="thumbnail-wrap"><img width="120" height="85" src="/storage/{$art.thumb}" class="attachment-zimeiti_2_widget_post_thumb size-zimeiti_2_widget_post_thumb wp-post-image" alt=""></div></a><div class="entry-wrap"><a href="{:url('Article/index', ['art_id'=>$art['id']])}" rel="bookmark">{$art.title}</a><div class="entry-meta">{$art.add_time|date="Y-m-d"}</div></div></li>
+	{/volist}
+</ul></div></aside>

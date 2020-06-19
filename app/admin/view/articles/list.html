@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html><head>
+	    <meta charset="utf-8">
+    <title>后台</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="{__ADMIN_STATIC__}/style/bootstrap.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/font-awesome.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="{__ADMIN_STATIC__}/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="{__ADMIN_STATIC__}/style/demo.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/typicons.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+	<!-- 头部 -->
+	{include file="common/head" /}
+	<!-- /头部 -->
+	
+	<div class="main-container container-fluid">
+		<div class="page-container">
+			<!-- Page Sidebar -->
+            {include file="common/left" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li class="active">文章管理</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<button type="button" tooltip="添加用户" class="btn btn-sm btn-azure btn-addon" onClick="javascript:window.location.href = '/admin/user/add.html'"> <i class="fa fa-plus"></i> Add
+</button>
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="flip-scroll">
+                    <table class="table table-bordered table-hover">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center" width="6%">ID</th>
+                                <th>文章名称</th>
+                                <th>所属分类</th>
+                                <th class="text-center" width="15%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="artRes" id="art"}
+                            <tr>
+                                <td align="center">{$art.id}</td>
+                                <td>{$art.title}</td>
+                                <td>{$art.cate_name}</td>
+                                <td align="center">
+                                    <a href="{:url('articles/edit', ['id'=>$art['id']])}" class="btn btn-primary btn-sm shiny">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a href="#" art_id="{$art.id}" class="btn btn-danger btn-sm shiny bootbox-confirm">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+
+                    <div style="text-align: right; padding-top:10px;">{$artRes|raw}</div>
+                </div>
+                
+                <div>
+                	                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+		</div>	
+	</div>
+
+	    <!--Basic Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/jquery_002.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootstrap.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/beyond.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootbox.js"></script>
+    <script type="text/javascript">
+        $(".bootbox-confirm").on('click', function () {
+            var _self = this;
+            bootbox.confirm("确定删除这个文章吗？", function (result) {
+                if (result) {
+                    var art_id = $(_self).attr('art_id');
+                    $.ajax({
+                   url: "{:url('Articles/del')}",
+                   method:"POST",
+                   data:{
+                    "id":art_id,
+                    },
+                    success:(res)=>{
+                        console.log(res);
+                        if(res.code==200){
+                            $(_self).parent().parent().remove();
+                            bootbox.dialog({
+                                message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-success' data-dismiss='modal'>OK</button></div>",
+                                title: "<i class='glyphicon glyphicon-check' style='color:#53a93f'></i>",
+                                className: "modal modal-message modal-success",
+                            });
+                        }else{
+                            bootbox.dialog({
+                                message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                                title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                                className: "modal modal-message modal-warning",
+                            });
+                        }
+                    }
+
+                });
+                }else{
+                    return;
+                }
+            });
+        });
+
+    </script>
+
+
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html><head>
+        <meta charset="utf-8">
+    <title>后台</title>
+
+    <meta name="description" content="Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--Basic Styles-->
+    <link href="{__ADMIN_STATIC__}/style/bootstrap.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/font-awesome.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/weather-icons.css" rel="stylesheet">
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="{__ADMIN_STATIC__}/style/beyond.css" rel="stylesheet" type="text/css">
+    <link href="{__ADMIN_STATIC__}/style/demo.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/typicons.css" rel="stylesheet">
+    <link href="{__ADMIN_STATIC__}/style/animate.css" rel="stylesheet">
+    
+</head>
+<body>
+    <!-- 头部 -->
+    {include file="common/head" /}
+    <!-- /头部 -->
+    
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            {include file="common/left" /}
+            <!-- /Page Sidebar -->
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                <div class="page-breadcrumbs">
+                    <ul class="breadcrumb">
+                                        <li>
+                        <a href="#">系统</a>
+                    </li>
+                                        <li>
+                        <a href="#">管理员管理</a>
+                    </li>
+                                        <li class="active">编辑管理员</li>
+                                        </ul>
+                </div>
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="widget">
+            <div class="widget-header bordered-bottom bordered-blue">
+                <span class="widget-caption">编辑管理员</span>
+            </div>
+            <div class="widget-body">
+                <div id="horizontal-form">
+                    <form class="form-horizontal" role="form" method="post">
+                        <input type="hidden" name="id" id="admin_id" value="{$adminInfo.id}">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label no-padding-right">管理员名</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="username" placeholder="" name="username" value="{$adminInfo.username}" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> 
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label no-padding-right">密码</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="password" placeholder="" name="password" required="" type="text">
+                            </div>
+                            <p class="help-block col-sm-4 red">* 必填</p>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" onClick="cateadd(event);" class="btn btn-default">保存信息</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>  
+    </div>
+
+
+    <script type="text/javascript">
+
+        function cateadd(event){
+            event.preventDefault();
+            var username = $("#username").val();
+            if(username.length < 2){
+                bootbox.dialog({
+                    message: "<div class='modal-body'>用户名过短~</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                    title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                    className: "modal modal-message modal-warning",
+                });
+
+                // alert('管理员名称过短！');
+                return false;
+            }
+            var password = $("#password").val();
+            var admin_id = $("#admin_id").val();
+            $.ajax({
+               url: "{:url('admin/admin/edit')}",
+               method:"POST",
+               data:{
+                "id":admin_id,
+                "username":username,
+                "password":password
+                },
+                success:(res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-success' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='glyphicon glyphicon-check' style='color:#53a93f'></i>",
+                            className: "modal modal-message modal-success",
+                        });
+                    }else{
+                        bootbox.dialog({
+                            message: "<div class='modal-body'>"+res.msg+"</div><div class='modal-footer'><button type='button' class='btn btn-warning' data-dismiss='modal'>OK</button></div>",
+                            title: "<i class='fa fa-warning' style='color:#f4b400'></i>",
+                            className: "modal modal-message modal-warning",
+                        });
+                    }
+                }
+
+            });
+        }
+    </script>
+        <!--Basic Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/jquery_002.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootstrap.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/jquery.js"></script>
+    <!--Beyond Scripts-->
+    <script src="{__ADMIN_STATIC__}/style/beyond.js"></script>
+    <script src="{__ADMIN_STATIC__}/style/bootbox.js"></script>
+
+
+
+
+</body></html>
